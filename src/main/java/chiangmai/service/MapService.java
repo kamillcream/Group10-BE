@@ -21,8 +21,6 @@ public class MapService {
     private final LandmarkService landmarkService;
     private final UserUtil userUtil;
 
-
-
     @Transactional
     public void updateWhenStart(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
@@ -35,6 +33,7 @@ public class MapService {
         userRepository.save(user);
         recalculateRanks();
     }
+
     @Transactional
     public List<Landmark> updateWhileWalking(WalkDto walkDto){
         User user = userRepository.findUserByName("John");

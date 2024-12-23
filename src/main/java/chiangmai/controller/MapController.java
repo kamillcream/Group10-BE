@@ -40,6 +40,8 @@ public class MapController implements MapDocs {
     }
     @PatchMapping("/walking")
     public ResponseEntity<WalkDto> handleWalkingRequest(@RequestBody WalkDto walkDto) {
+        System.out.println(walkDto.getCurrentX());
+        System.out.println(walkDto.getCurrentY());
         mapService.updateWhileWalking(walkDto);
         return ResponseEntity.ok().body(walkDto);
     }
