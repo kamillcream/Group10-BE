@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: IoTProject
+
+  datasource:
+    url: jdbc:mysql://34.173.122.51:3306/iot  # 데이터베이스 URL
+    username: root                          # 데이터베이스 사용자 이름
+    password: keypass                              # 데이터베이스 비밀번호
+    driver-class-name: com.mysql.cj.jdbc.Driver          # MySQL 드라이버 클래스
+
+  jpa:
+    hibernate:
+      ddl-auto: update                                    # 스키마 자동 업데이트 (create, update, validate, none 중 선택)
+    show-sql: false                                        # 실행된 SQL 출력 여부
+    properties:
+      hibernate:
+        format_sql: true                                  # SQL 포맷팅
+
+  kafka:
+    consumer:
+      bootstrap-servers: 10.128.0.2:9092
+      group-id: sensor-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "iot.dto"
+        spring.json.value.default.type: "iot.dto.SensorDto"
+
+    tomcat:
+      websocket:
+        timeout: 60000 # WebSocket 타임아웃 (60초)
+      max-swallow-size: 2MB # 최대 메시지 크기 제한
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          socket: DEBUG
+        messaging: DEBUG
+
+server:
+    port: 8080
+    address: 0.0.0.0
