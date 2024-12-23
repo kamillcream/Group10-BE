@@ -20,6 +20,7 @@ public class User {
     private String name;
     @Column(name = "`rank`")
     private Integer rank;
+    private Long credit;
     private double total; // 총 도보량
     private double startX;
     private double startY;

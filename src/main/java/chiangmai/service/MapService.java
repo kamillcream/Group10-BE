@@ -5,6 +5,7 @@ import chiangmai.dto.PositionDto;
 import chiangmai.domain.User;
 import chiangmai.dto.UserDto;
 import chiangmai.dto.WalkDto;
+import chiangmai.enumeration.DistanceStandard;
 import chiangmai.repository.UserRepository;
 import chiangmai.util.UserUtil;
 import jakarta.transaction.Transactional;
@@ -20,6 +21,7 @@ public class MapService {
     private final UserRepository userRepository;
     private final LandmarkService landmarkService;
     private final UserUtil userUtil;
+    private final DistanceStandard distanceStandard;
 
     @Transactional
     public void updateWhenStart(PositionDto positionDto){
@@ -45,6 +47,8 @@ public class MapService {
     @Transactional
     public void updateWhenEnd(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
+        int credit = calculateCredit(positionDto);
+        user.setCredit(user.getCredit() + credit);
         user.setTotal(user.getTotal() + positionDto.getEndX() - positionDto.getCurrentX());
         userRepository.save(user);
         recalculateRanks();
@@ -68,8 +72,47 @@ public class MapService {
         // 모든 변경사항 저장
         userRepository.saveAll(users);
     }
+
     public List<UserDto> fetchRanking(){
         List<UserDto> rankList = userRepository.findTop10ByOrderByRank(PageRequest.of(0, 10));
         return rankList;
     }
+    public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final double EARTH_RADIUS = 6371000;
+        // 라디안 단위로 변환
+        double lat1Rad = Math.toRadians(lat1);
+        double lon1Rad = Math.toRadians(lon1);
+        double lat2Rad = Math.toRadians(lat2);
+        double lon2Rad = Math.toRadians(lon2);
+
+        // 위도와 경도의 차이 계산
+        double deltaLat = lat2Rad - lat1Rad;
+        double deltaLon = lon2Rad - lon1Rad;
+
+        // 하버사인 공식 적용
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2)
+                + Math.cos(lat1Rad) * Math.cos(lat2Rad)
+                * Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // 거리 계산
+        return EARTH_RADIUS * c;
+    }
+    public int calculateCredit(PositionDto positionDto) {
+        // 거리 계산
+        double distance = calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
+                positionDto.getEndX(), positionDto.getEndY());
+
+        // 거리 기준에 따른 크레딧 반환
+        for (DistanceStandard standard : DistanceStandard.values()) {
+            if (distance <= standard.getCredit()) {
+                return standard.getCredit();
+            }
+        }
+
+        // 기본값 (거리가 기준을 초과할 경우)
+        return 0;
+    }
+
 }
