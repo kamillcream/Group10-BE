@@ -4,9 +4,7 @@ import chiangmai.docs.MapDocs;
 import chiangmai.domain.Landmark;
 import chiangmai.dto.PositionDto;
 import chiangmai.dto.ResponseDto;
-import chiangmai.dto.UserDto;
 import chiangmai.dto.WalkDto;
-import chiangmai.service.NotificationService;
 import chiangmai.service.MapService;
 import chiangmai.util.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +21,6 @@ public class MapController implements MapDocs {
 
     @Autowired
     private MapService mapService;
-    @Autowired
-    private NotificationService notificationService;
     @Autowired
     private UserUtil userUtil;
 
