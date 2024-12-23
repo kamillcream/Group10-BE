@@ -1,9 +1,7 @@
 package chiangmai.controller;
 
 import chiangmai.docs.MapDocs;
-import chiangmai.domain.User;
 import chiangmai.dto.PositionDto;
-//import iot.service.KafkaRequestProducer;
 import chiangmai.dto.UserDto;
 import chiangmai.dto.WalkDto;
 import chiangmai.service.NotificationService;
