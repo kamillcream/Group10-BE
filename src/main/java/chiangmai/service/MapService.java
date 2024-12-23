@@ -21,7 +21,7 @@ public class MapService {
     private final UserRepository userRepository;
     private final LandmarkService landmarkService;
     private final UserUtil userUtil;
-    private final DistanceStandard distanceStandard;
+    private DistanceStandard distanceStandard;
 
     @Transactional
     public void updateWhenStart(PositionDto positionDto){
