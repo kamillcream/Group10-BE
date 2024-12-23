@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 @Getter
 public enum DistanceStandard {
 
-    HALF(0.5, 300),
-    ONE(1.0, 600),
-    ONEHALF(1.5, 1000),
-    TWO(2.0,1500);
+    TWO(2000,1500),
+    ONEHALF(1500, 1000),
+    ONE(1000, 600),
+    HALF(500, 300),
+    ZERO(0, 0);
 
     private final double distance;
     private final int credit;
