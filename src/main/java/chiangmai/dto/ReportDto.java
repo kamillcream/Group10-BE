@@ -11,5 +11,4 @@ public class ReportDto {
     private double kcal;
     private double fat;
     private double co2;
-
 }
