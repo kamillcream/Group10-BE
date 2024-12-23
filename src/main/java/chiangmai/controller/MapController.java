@@ -31,9 +31,8 @@ public class MapController implements MapDocs {
 
     // GET 요청 처리
     @PostMapping("/start")
-    public ResponseEntity<PositionDto> handleStartRequest(@RequestBody PositionDto positionDto) {
-        mapService.updateWhenStart(positionDto);
-        return ResponseEntity.ok().body(positionDto);
+    public ResponseEntity<Double> handleStartRequest(@RequestBody PositionDto positionDto) {
+        return ResponseEntity.ok().body(mapService.updateWhenStart(positionDto));
     }
     @PostMapping("/end")
     public ResponseEntity<Double> handleEndRequest(@RequestBody PositionDto positionDto) {

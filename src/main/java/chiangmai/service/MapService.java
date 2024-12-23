@@ -25,7 +25,7 @@ public class MapService {
     private DistanceStandard distanceStandard;
 
     @Transactional
-    public void updateWhenStart(PositionDto positionDto){
+    public Double updateWhenStart(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
         user.setStartX(positionDto.getStartX());
         user.setStartY(positionDto.getStartY());
@@ -34,6 +34,9 @@ public class MapService {
         user.setEndX(positionDto.getEndX());
         user.setEndY(positionDto.getEndY());
         userRepository.save(user);
+
+        return calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
+                positionDto.getEndX(), positionDto.getEndY());
     }
 
     @Transactional
@@ -109,6 +112,10 @@ public class MapService {
         return EARTH_RADIUS * c;
     }
     public int calculateCredit(PositionDto positionDto) {
+        System.out.println("StartX: " + positionDto.getStartX());
+        System.out.println("StartY: " + positionDto.getStartY());
+        System.out.println("EndX: " + positionDto.getEndX());
+        System.out.println("EndY: " + positionDto.getEndY());
         // 거리 계산
         double distance = calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
                 positionDto.getEndX(), positionDto.getEndY());
