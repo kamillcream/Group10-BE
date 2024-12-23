@@ -82,3 +82,4 @@ jobs:
             -p 8080:8080 \
             -p 8081:8081 \
             us-central1-docker.pkg.dev/${GCP_PROJECT_ID}/kcamp-10/${IMAGE_NAME}:${IMAGE_TAG}
+
