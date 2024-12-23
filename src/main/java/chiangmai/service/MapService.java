@@ -1,35 +1,50 @@
 package chiangmai.service;
 
+import chiangmai.domain.Landmark;
 import chiangmai.dto.PositionDto;
 import chiangmai.domain.User;
 import chiangmai.dto.UserDto;
+import chiangmai.dto.WalkDto;
 import chiangmai.repository.UserRepository;
 import chiangmai.util.UserUtil;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MapService {
     private final UserRepository userRepository;
+    private final LandmarkService landmarkService;
     private final UserUtil userUtil;
 
-    public MapService(UserRepository userRepository, UserUtil userUtil){
-        this.userRepository = userRepository;
-        this.userUtil = userUtil;
-    }
+
 
     @Transactional
-    public void updatePosition(PositionDto positionDto){
+    public void updateWhenStart(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
+        user.setStartX(positionDto.getStartX());
+        user.setStartY(positionDto.getStartY());
         user.setCurrentX(positionDto.getCurrentX());
         user.setCurrentY(positionDto.getCurrentY());
+        user.setEndX(positionDto.getEndX());
+        user.setEndY(positionDto.getEndY());
         userRepository.save(user);
+        recalculateRanks();
     }
     @Transactional
-    public void updateResult(PositionDto positionDto){
+    public List<Landmark> updateWhileWalking(WalkDto walkDto){
+        User user = userRepository.findUserByName("John");
+        user.setCurrentX(walkDto.getCurrentX());
+        user.setCurrentY(walkDto.getCurrentY());
+        userRepository.save(user);
+        return landmarkService.fetchNearbyLandmarks(walkDto);
+    }
+    @Transactional
+    public void updateWhenEnd(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
         user.setTotal(user.getTotal() + positionDto.getEndX() - positionDto.getCurrentX());
         userRepository.save(user);
