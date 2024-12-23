@@ -35,9 +35,8 @@ public class MapController implements MapDocs {
         return ResponseEntity.ok().body(positionDto);
     }
     @PostMapping("/end")
-    public ResponseEntity<PositionDto> handleEndRequest(@RequestBody PositionDto positionDto) {
-        mapService.updateWhenEnd(positionDto);
-        return ResponseEntity.ok().body(positionDto);
+    public ResponseEntity<Double> handleEndRequest(@RequestBody PositionDto positionDto) {
+        return ResponseEntity.ok().body(mapService.updateWhenEnd(positionDto));
     }
     @PatchMapping("/walking")
     public ResponseEntity<List<Landmark>> handleWalkingRequest(@RequestBody WalkDto walkDto) {

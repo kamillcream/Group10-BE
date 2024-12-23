@@ -45,13 +45,16 @@ public class MapService {
         return landmarkService.fetchNearbyLandmarks(walkDto);
     }
     @Transactional
-    public void updateWhenEnd(PositionDto positionDto){
+    public double updateWhenEnd(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
         int credit = calculateCredit(positionDto);
         user.setCredit(user.getCredit() + credit);
         user.setTotal(user.getTotal() + positionDto.getEndX() - positionDto.getCurrentX());
         userRepository.save(user);
         recalculateRanks();
+
+        return calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
+                positionDto.getEndX(), positionDto.getEndY());
     }
     @Transactional
     public void recalculateRanks() {
@@ -95,7 +98,7 @@ public class MapService {
                 * Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
+        System.out.println(EARTH_RADIUS * c);
         // 거리 계산
         return EARTH_RADIUS * c;
     }
@@ -106,7 +109,7 @@ public class MapService {
 
         // 거리 기준에 따른 크레딧 반환
         for (DistanceStandard standard : DistanceStandard.values()) {
-            if (distance <= standard.getCredit()) {
+            if (distance >= standard.getDistance()) {
                 return standard.getCredit();
             }
         }
