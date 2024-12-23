@@ -1,6 +1,7 @@
 package chiangmai.controller;
 
 import chiangmai.docs.MapDocs;
+import chiangmai.domain.Landmark;
 import chiangmai.dto.PositionDto;
 import chiangmai.dto.UserDto;
 import chiangmai.dto.WalkDto;
@@ -39,11 +40,10 @@ public class MapController implements MapDocs {
         return ResponseEntity.ok().body(positionDto);
     }
     @PatchMapping("/walking")
-    public ResponseEntity<WalkDto> handleWalkingRequest(@RequestBody WalkDto walkDto) {
+    public ResponseEntity<List<Landmark>> handleWalkingRequest(@RequestBody WalkDto walkDto) {
         System.out.println(walkDto.getCurrentX());
         System.out.println(walkDto.getCurrentY());
-        mapService.updateWhileWalking(walkDto);
-        return ResponseEntity.ok().body(walkDto);
+        return ResponseEntity.ok().body(mapService.updateWhileWalking(walkDto));
     }
     @GetMapping("/rank")
     public ResponseEntity<List<UserDto>> getRanking() {
