@@ -20,7 +20,7 @@ public interface MapDocs {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "회원가입 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "유저 정보 저장 실패(유저 중복)") })
-    public ResponseEntity<Double> handleStartRequest(@RequestBody PositionDto positionDto);
+    public ResponseEntity<StartDto> handleStartRequest(@RequestBody PositionDto positionDto);
 
     @Operation(summary = "도보 중", description = "도보 중 위치를 최신화하고 주위 랜드마크를 확인하고 랜덤으로 이벤트 알림(쿠폰 등)을 발생시킵니다.")
     @ApiResponses(value = {

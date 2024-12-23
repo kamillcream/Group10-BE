@@ -22,7 +22,7 @@ public class MapService {
     private DistanceStandard distanceStandard;
 
     @Transactional
-    public Double updateWhenStart(PositionDto positionDto){
+    public StartDto updateWhenStart(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
         user.setStartX(positionDto.getStartX());
         user.setStartY(positionDto.getStartY());
@@ -32,8 +32,13 @@ public class MapService {
         user.setEndY(positionDto.getEndY());
         userRepository.save(user);
 
-        return calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
+        double distance = calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
                 positionDto.getEndX(), positionDto.getEndY());
+        long credit = calculateCredit(positionDto);
+        return StartDto.builder()
+                .credit(credit)
+                .distance(distance)
+                .build();
     }
 
     @Transactional
@@ -48,8 +53,8 @@ public class MapService {
     public double updateWhenEnd(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
         int credit = calculateCredit(positionDto);
-        double distance = calculateDistance(positionDto.getStartY(), positionDto.getStartX(),
-                positionDto.getEndY(), positionDto.getEndX());
+        double distance = calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
+                positionDto.getEndX(), positionDto.getEndY());
         user.setCredit(user.getCredit() + credit);
         user.setTotal(user.getTotal() + distance);
         userRepository.save(user);

@@ -2,10 +2,7 @@ package chiangmai.controller;
 
 import chiangmai.docs.MapDocs;
 import chiangmai.domain.Landmark;
-import chiangmai.dto.PositionDto;
-import chiangmai.dto.ReportDto;
-import chiangmai.dto.ResponseDto;
-import chiangmai.dto.WalkDto;
+import chiangmai.dto.*;
 import chiangmai.service.MapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,7 @@ public class MapController implements MapDocs {
 
     // GET 요청 처리
     @PostMapping("/start")
-    public ResponseEntity<Double> handleStartRequest(@RequestBody PositionDto positionDto) {
+    public ResponseEntity<StartDto> handleStartRequest(@RequestBody PositionDto positionDto) {
         return ResponseEntity.ok().body(mapService.updateWhenStart(positionDto));
     }
     @PostMapping("/end")
