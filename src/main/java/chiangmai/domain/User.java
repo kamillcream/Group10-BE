@@ -19,7 +19,7 @@ public class User {
     @Column(name = "`name`")
     private String name;
     @Column(name = "`rank`")
-    private int rank;
+    private Integer rank;
     private double total; // 총 도보량
     private double startX;
     private double startY;
