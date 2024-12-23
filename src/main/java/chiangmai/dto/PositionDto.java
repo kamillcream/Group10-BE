@@ -3,10 +3,11 @@ package chiangmai.dto;
 import lombok.Getter;
 
 @Getter
-public class SensorDto {
-    public double BPM;
-    public double body;
-    public double air;
-    public double lan;
-    public double lon;
+public class PositionDto {
+    private double startX;
+    private double startY;
+    private double endX;
+    private double endY;
+    private double currentX;
+    private double currentY;
 }

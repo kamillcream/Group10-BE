@@ -1,9 +1,6 @@
-package com.chiangmai.domain;
+package chiangmai.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -16,13 +13,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String gender;
-    private int age;
-    private String phone;
-    private String address;
-    private int status; // 0: 적절 1: 관심 2: 주의 3: 위험
-    private int prevStatus; // 0: 적절 1: 관심 2: 주의 3: 위험
+    @Column(name = "user_id")
+    private String userId;
+    private String password;
+    @Column(name = "`name`")
     private String name;
-    private double lan;
-    private double lon;
+    @Column(name = "`rank`")
+    private int rank;
+    private double total; // 총 도보량
+    private double startX;
+    private double startY;
+    private double endX;
+    private double endY;
+    private double currentX;
+    private double currentY;
 }

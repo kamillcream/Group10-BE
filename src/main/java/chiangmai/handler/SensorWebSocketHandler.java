@@ -1,7 +1,7 @@
-package com.chiangmai.handler;
+package chiangmai.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import iot.dto.ResponseDto;
+import chiangmai.dto.ResponseDto;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;

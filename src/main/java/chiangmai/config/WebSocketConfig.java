@@ -1,6 +1,6 @@
-package com.chiangmai.config;
+package chiangmai.config;
 
-import com.chiangmai.handler.SensorWebSocketHandler;
+import chiangmai.handler.SensorWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
