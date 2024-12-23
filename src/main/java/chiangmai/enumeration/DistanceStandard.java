@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 @Getter
-@Component
-public enum DistanceStandard{
+public enum DistanceStandard {
 
     HALF(300),
     ONE(600),
