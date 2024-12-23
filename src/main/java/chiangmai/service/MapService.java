@@ -1,11 +1,8 @@
 package chiangmai.service;
 
 import chiangmai.domain.Landmark;
-import chiangmai.dto.PositionDto;
+import chiangmai.dto.*;
 import chiangmai.domain.User;
-import chiangmai.dto.ResponseDto;
-import chiangmai.dto.UserDto;
-import chiangmai.dto.WalkDto;
 import chiangmai.enumeration.DistanceStandard;
 import chiangmai.repository.UserRepository;
 import chiangmai.util.UserUtil;
@@ -89,6 +86,14 @@ public class MapService {
                 .userDtos(rankList)
                 .build();
     }
+    public ReportDto fetchReport(){
+        User user = userRepository.findUserByName("John");
+        return ReportDto.builder()
+                .kcal(calculateKcal(user.getTotal()))
+                .fat(calculateFat(user.getTotal()))
+                .co2(calculateC02(user.getTotal()))
+                .build();
+    }
     public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final double EARTH_RADIUS = 6371000;
         // 라디안 단위로 변환
@@ -129,6 +134,15 @@ public class MapService {
 
         // 기본값 (거리가 기준을 초과할 경우)
         return 0;
+    }
+    public double calculateKcal(double total){
+        return total * 65 * 0.8;
+    }
+    public double calculateFat(double total){
+        return calculateKcal(total) * 0.4 / 0.9;
+    }
+    public double calculateC02(double total){
+        return total * 0.2;
     }
 
 }

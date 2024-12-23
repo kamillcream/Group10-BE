@@ -3,6 +3,7 @@ package chiangmai.controller;
 import chiangmai.docs.MapDocs;
 import chiangmai.domain.Landmark;
 import chiangmai.dto.PositionDto;
+import chiangmai.dto.ReportDto;
 import chiangmai.dto.ResponseDto;
 import chiangmai.dto.WalkDto;
 import chiangmai.service.MapService;
@@ -18,12 +19,8 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 @RequiredArgsConstructor
 public class MapController implements MapDocs {
-
     @Autowired
     private MapService mapService;
-    @Autowired
-    private UserUtil userUtil;
-
 
     // GET 요청 처리
     @PostMapping("/start")
@@ -36,12 +33,15 @@ public class MapController implements MapDocs {
     }
     @PatchMapping("/walking")
     public ResponseEntity<List<Landmark>> handleWalkingRequest(@RequestBody WalkDto walkDto) {
-        System.out.println(walkDto.getCurrentX());
-        System.out.println(walkDto.getCurrentY());
         return ResponseEntity.ok().body(mapService.updateWhileWalking(walkDto));
     }
     @GetMapping("/rank")
     public ResponseEntity<ResponseDto> getRanking() {
         return ResponseEntity.ok().body(mapService.fetchRanking());
     }
+    @GetMapping("/report")
+    public ResponseEntity<ReportDto> getReport() {
+        return ResponseEntity.ok().body(mapService.fetchReport());
+    }
+
 }
