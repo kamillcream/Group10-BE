@@ -48,8 +48,8 @@ public class MapService {
     public double updateWhenEnd(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
         int credit = calculateCredit(positionDto);
-        double distance = calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
-                positionDto.getEndX(), positionDto.getEndY());
+        double distance = calculateDistance(positionDto.getStartY(), positionDto.getStartX(),
+                positionDto.getEndY(), positionDto.getEndX());
         user.setCredit(user.getCredit() + credit);
         user.setTotal(user.getTotal() + distance);
         userRepository.save(user);
@@ -58,6 +58,18 @@ public class MapService {
         return calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
                 positionDto.getEndX(), positionDto.getEndY());
     }
+    /*@Transactional
+    public double updateWhenEnd(double distance){
+        User user = userRepository.findUserByName("John");
+        int credit = calculateCredit(distance);
+        user.setCredit(user.getCredit() + credit);
+        user.setTotal(user.getTotal() + distance);
+        userRepository.save(user);
+        recalculateRanks();
+
+        return calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
+                positionDto.getEndX(), positionDto.getEndY());
+    }*/
     @Transactional
     public void recalculateRanks() {
         // total 기준으로 정렬된 사용자 리스트 가져오기
@@ -117,10 +129,6 @@ public class MapService {
         return EARTH_RADIUS * c;
     }
     public int calculateCredit(PositionDto positionDto) {
-        System.out.println("StartX: " + positionDto.getStartX());
-        System.out.println("StartY: " + positionDto.getStartY());
-        System.out.println("EndX: " + positionDto.getEndX());
-        System.out.println("EndY: " + positionDto.getEndY());
         // 거리 계산
         double distance = calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
                 positionDto.getEndX(), positionDto.getEndY());
@@ -135,6 +143,17 @@ public class MapService {
         // 기본값 (거리가 기준을 초과할 경우)
         return 0;
     }
+//    public int calculateCredit(double distance) {
+//        // 거리 기준에 따른 크레딧 반환
+//        for (DistanceStandard standard : DistanceStandard.values()) {
+//            if (distance >= standard.getDistance()) {
+//                return standard.getCredit();
+//            }
+//        }
+//
+//        // 기본값 (거리가 기준을 초과할 경우)
+//        return 0;
+//    }
     public double calculateKcal(double total){
         return total * 65 * 0.8;
     }
