@@ -14,5 +14,5 @@ public enum DistanceStandard{
     ONEHALF(1000),
     TWO(1500);
 
-    private int credit;
+    private final int credit;
 }
