@@ -48,8 +48,10 @@ public class MapService {
     public double updateWhenEnd(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
         int credit = calculateCredit(positionDto);
+        double distance = calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
+                positionDto.getEndX(), positionDto.getEndY());
         user.setCredit(user.getCredit() + credit);
-        user.setTotal(user.getTotal() + positionDto.getEndX() - positionDto.getCurrentX());
+        user.setTotal(user.getTotal() + distance);
         userRepository.save(user);
         recalculateRanks();
 
