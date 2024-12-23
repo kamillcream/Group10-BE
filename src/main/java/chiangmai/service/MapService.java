@@ -3,6 +3,7 @@ package chiangmai.service;
 import chiangmai.domain.Landmark;
 import chiangmai.dto.PositionDto;
 import chiangmai.domain.User;
+import chiangmai.dto.ResponseDto;
 import chiangmai.dto.UserDto;
 import chiangmai.dto.WalkDto;
 import chiangmai.enumeration.DistanceStandard;
@@ -33,7 +34,6 @@ public class MapService {
         user.setEndX(positionDto.getEndX());
         user.setEndY(positionDto.getEndY());
         userRepository.save(user);
-        recalculateRanks();
     }
 
     @Transactional
@@ -76,9 +76,13 @@ public class MapService {
         userRepository.saveAll(users);
     }
 
-    public List<UserDto> fetchRanking(){
+    public ResponseDto fetchRanking(){
         List<UserDto> rankList = userRepository.findTop10ByOrderByRank(PageRequest.of(0, 10));
-        return rankList;
+        long credit = userRepository.findCreditByName("John");
+        return ResponseDto.builder()
+                .credit(credit)
+                .userDtos(rankList)
+                .build();
     }
     public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final double EARTH_RADIUS = 6371000;

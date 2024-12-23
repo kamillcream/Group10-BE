@@ -15,4 +15,5 @@ public class UserDto {
     private String name;
     @Column(name = "`rank`")
     private int rank;
+    private Long credit;
 }

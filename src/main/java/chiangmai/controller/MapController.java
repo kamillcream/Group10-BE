@@ -3,6 +3,7 @@ package chiangmai.controller;
 import chiangmai.docs.MapDocs;
 import chiangmai.domain.Landmark;
 import chiangmai.dto.PositionDto;
+import chiangmai.dto.ResponseDto;
 import chiangmai.dto.UserDto;
 import chiangmai.dto.WalkDto;
 import chiangmai.service.NotificationService;
@@ -45,7 +46,7 @@ public class MapController implements MapDocs {
         return ResponseEntity.ok().body(mapService.updateWhileWalking(walkDto));
     }
     @GetMapping("/rank")
-    public ResponseEntity<List<UserDto>> getRanking() {
+    public ResponseEntity<ResponseDto> getRanking() {
         return ResponseEntity.ok().body(mapService.fetchRanking());
     }
 }
