@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface LandmarkRepository extends JpaRepository<Landmark, Long> {
     @Query(
-            value = "SELECT * FROM Landmark s WHERE ST_Distance_Sphere(point(s.x, s.y), point(:x, :y)) <= 100",
+            value = "SELECT * FROM landmark l WHERE ST_Distance_Sphere(point(l.x, l.y), point(:x, :y)) <= 100",
             nativeQuery = true
     )
     List<Landmark> findStoresWithin100M(@Param("x") double x, @Param("y") double y);
