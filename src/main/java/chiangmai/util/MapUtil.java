@@ -22,7 +22,6 @@ public class MapUtil {
                 * Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        System.out.println(EARTH_RADIUS * c);
         // 거리 계산
         return EARTH_RADIUS * c;
     }
