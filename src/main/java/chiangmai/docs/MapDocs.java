@@ -3,7 +3,6 @@ package chiangmai.docs;
 import chiangmai.domain.Landmark;
 import chiangmai.dto.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,11 +28,11 @@ public interface MapDocs {
     public ResponseEntity<List<Landmark>> handleWalkingRequest(@RequestBody WalkDto walkDto);
 
 
-    @Operation(summary = "도보 끝", description = "목적지 도착 후 크레딧, 총 도보량 최신화.")
+    @Operation(summary = "도보 끝", description = "목적지 도착 후 이상 감지 여부에 따라 크레딧, 총 도보량 최신화. true면 도보 유저, false면 오토바이 유저")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "회원가입 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "유저 정보 저장 실패(유저 중복)") })
-    public ResponseEntity<Object> handleEndRequest(@RequestBody PositionDto positionDto);
+    public ResponseEntity<Boolean> handleEndRequest(@RequestBody PositionDto positionDto);
 
     @Operation(summary = "랭킹 및 보유 크레딧 불러오기", description = "사용자의 보유 크레딧과 랭킹을 크레딧 기준으로 불러옵니다.")
     @ApiResponses(value = {

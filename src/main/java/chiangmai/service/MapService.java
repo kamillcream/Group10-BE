@@ -63,21 +63,21 @@ public class MapService {
         return landmarkService.fetchNearbyLandmarks(walkDto);
     }
     @Transactional
-    public Object updateWhenEnd(PositionDto positionDto){
+    public boolean updateWhenEnd(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
         int credit = calculateCredit(positionDto);
         double distance = calculateDistance(positionDto.getStartY(), positionDto.getStartX(),
                 positionDto.getEndY(), positionDto.getEndX());
 
         if(user.isDetect()){
-            return "Detect anomaly during journey";
+            return false;
         }
         user.setCredit(user.getCredit() + credit);
         user.setTotal(user.getTotal() + distance);
         userRepository.save(user);
         recalculateRanks();
 
-        return distance;
+        return true;
     }
     /*@Transactional
     public double updateWhenEnd(double distance){

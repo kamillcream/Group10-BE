@@ -24,7 +24,7 @@ public class MapController implements MapDocs {
         return ResponseEntity.ok().body(mapService.updateWhenStart(positionDto));
     }
     @PostMapping("/end")
-    public ResponseEntity<Object> handleEndRequest(@RequestBody PositionDto positionDto) {
+    public ResponseEntity<Boolean> handleEndRequest(@RequestBody PositionDto positionDto) {
         return ResponseEntity.ok().body(mapService.updateWhenEnd(positionDto));
     }
     /*@PostMapping("/end")
