@@ -37,7 +37,7 @@ public class MapService {
         user.setPrevY(positionDto.getCurrentY());
         user.setEndX(positionDto.getEndX());
         user.setEndY(positionDto.getEndY());
-        user.setDetect(false);
+        user.setDetect(0);
         userRepository.save(user);
 
         double distance = calculateDistance(positionDto.getStartY(), positionDto.getStartX(),
@@ -57,7 +57,7 @@ public class MapService {
         user.setCurrentX(walkDto.getCurrentX());
         user.setCurrentY(walkDto.getCurrentY());
         if(calculateDistance(user.getPrevX(), user.getPrevY(), user.getCurrentX(), user.getCurrentY()) >= 1000){
-            user.setDetect(true);
+            user.setDetect(1);
         }
         userRepository.save(user);
         return landmarkService.fetchNearbyLandmarks(walkDto);
@@ -69,7 +69,7 @@ public class MapService {
         double distance = calculateDistance(positionDto.getStartY(), positionDto.getStartX(),
                 positionDto.getEndY(), positionDto.getEndX());
 
-        if(user.isDetect()){
+        if(user.getDetect() == 1){
             return false;
         }
         user.setCredit(user.getCredit() + credit);

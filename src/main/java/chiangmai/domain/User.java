@@ -30,5 +30,5 @@ public class User {
     private double currentY;
     private double prevX;
     private double prevY;
-    private boolean detect;
+    private int detect;
 }
