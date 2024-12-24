@@ -13,8 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LandmarkService {
     private final LandmarkRepository landmarkRepository;
-
     public List<Landmark> fetchNearbyLandmarks(WalkDto walkDto){
-        return landmarkRepository.findStoresWithin100M(walkDto.getCurrentX(), walkDto.getCurrentY());
+        return landmarkRepository.findStoresWithin100M(walkDto.getCurrentY(), walkDto.getCurrentX());
     }
 }

@@ -28,4 +28,7 @@ public class User {
     private double endY;
     private double currentX;
     private double currentY;
+    private double prevX;
+    private double prevY;
+    private boolean detect;
 }

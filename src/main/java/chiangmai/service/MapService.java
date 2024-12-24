@@ -5,6 +5,7 @@ import chiangmai.dto.*;
 import chiangmai.domain.User;
 import chiangmai.enumeration.DistanceStandard;
 import chiangmai.repository.UserRepository;
+import chiangmai.util.MapUtil;
 import chiangmai.util.UserUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static chiangmai.util.MapUtil.calculateDistance;
 import static chiangmai.util.UserUtil.*;
 
 @Service
@@ -21,6 +23,7 @@ public class MapService {
     private final UserRepository userRepository;
     private final LandmarkService landmarkService;
     private final UserUtil userUtil;
+    private final MapUtil mapUtil;
     private DistanceStandard distanceStandard;
 
     @Transactional
@@ -30,8 +33,11 @@ public class MapService {
         user.setStartY(positionDto.getStartY());
         user.setCurrentX(positionDto.getCurrentX());
         user.setCurrentY(positionDto.getCurrentY());
+        user.setPrevX(positionDto.getCurrentX());
+        user.setPrevY(positionDto.getCurrentY());
         user.setEndX(positionDto.getEndX());
         user.setEndY(positionDto.getEndY());
+        user.setDetect(false);
         userRepository.save(user);
 
         double distance = calculateDistance(positionDto.getStartY(), positionDto.getStartX(),
@@ -46,17 +52,26 @@ public class MapService {
     @Transactional
     public List<Landmark> updateWhileWalking(WalkDto walkDto){
         User user = userRepository.findUserByName("John");
+        user.setPrevX(user.getCurrentX());
+        user.setPrevY(user.getCurrentY());
         user.setCurrentX(walkDto.getCurrentX());
         user.setCurrentY(walkDto.getCurrentY());
+        if(calculateDistance(user.getPrevX(), user.getPrevY(), user.getCurrentX(), user.getCurrentY()) >= 1000){
+            user.setDetect(true);
+        }
         userRepository.save(user);
         return landmarkService.fetchNearbyLandmarks(walkDto);
     }
     @Transactional
-    public double updateWhenEnd(PositionDto positionDto){
+    public Object updateWhenEnd(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
         int credit = calculateCredit(positionDto);
         double distance = calculateDistance(positionDto.getStartY(), positionDto.getStartX(),
                 positionDto.getEndY(), positionDto.getEndX());
+
+        if(user.isDetect()){
+            return "Detect anomaly during journey";
+        }
         user.setCredit(user.getCredit() + credit);
         user.setTotal(user.getTotal() + distance);
         userRepository.save(user);
@@ -111,42 +126,7 @@ public class MapService {
                 .co2(calculateC02(user.getTotal()))
                 .build();
     }
-    public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        final double EARTH_RADIUS = 6371000;
-        // 라디안 단위로 변환
-        double lat1Rad = Math.toRadians(lat1);
-        double lon1Rad = Math.toRadians(lon1);
-        double lat2Rad = Math.toRadians(lat2);
-        double lon2Rad = Math.toRadians(lon2);
 
-        // 위도와 경도의 차이 계산
-        double deltaLat = lat2Rad - lat1Rad;
-        double deltaLon = lon2Rad - lon1Rad;
-
-        // 하버사인 공식 적용
-        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2)
-                + Math.cos(lat1Rad) * Math.cos(lat2Rad)
-                * Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        // 거리 계산
-        return EARTH_RADIUS * c;
-    }
-    public int calculateCredit(PositionDto positionDto) {
-        // 거리 계산
-        double distance = calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
-                positionDto.getEndX(), positionDto.getEndY());
-
-        // 거리 기준에 따른 크레딧 반환
-        for (DistanceStandard standard : DistanceStandard.values()) {
-            if (distance >= standard.getDistance()) {
-                return standard.getCredit();
-            }
-        }
-
-        // 기본값 (거리가 기준을 초과할 경우)
-        return 0;
-    }
 //    public int calculateCredit(double distance) {
 //        // 거리 기준에 따른 크레딧 반환
 //        for (DistanceStandard standard : DistanceStandard.values()) {

@@ -46,11 +46,10 @@ public class UserUtil {
         userRepository.saveAll(users);
     }
 
-    public int calculateCredit(PositionDto positionDto) {
+    public static int calculateCredit(PositionDto positionDto) {
         // 거리 계산
         double distance = calculateDistance(positionDto.getStartY(), positionDto.getStartX(),
                 positionDto.getEndY(), positionDto.getEndX());
-
         // 거리 기준에 따른 크레딧 반환
         for (DistanceStandard standard : DistanceStandard.values()) {
             if (distance >= standard.getDistance()) {
