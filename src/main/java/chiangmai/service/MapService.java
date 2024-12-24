@@ -34,8 +34,8 @@ public class MapService {
         user.setEndY(positionDto.getEndY());
         userRepository.save(user);
 
-        double distance = calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
-                positionDto.getEndX(), positionDto.getEndY());
+        double distance = calculateDistance(positionDto.getStartY(), positionDto.getStartX(),
+                positionDto.getEndY(), positionDto.getEndX());
         long credit = calculateCredit(positionDto);
         return StartDto.builder()
                 .credit(credit)
@@ -55,15 +55,14 @@ public class MapService {
     public double updateWhenEnd(PositionDto positionDto){
         User user = userRepository.findUserByName("John");
         int credit = calculateCredit(positionDto);
-        double distance = calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
-                positionDto.getEndX(), positionDto.getEndY());
+        double distance = calculateDistance(positionDto.getStartY(), positionDto.getStartX(),
+                positionDto.getEndY(), positionDto.getEndX());
         user.setCredit(user.getCredit() + credit);
         user.setTotal(user.getTotal() + distance);
         userRepository.save(user);
         recalculateRanks();
 
-        return calculateDistance(positionDto.getStartX(), positionDto.getStartY(),
-                positionDto.getEndX(), positionDto.getEndY());
+        return distance;
     }
     /*@Transactional
     public double updateWhenEnd(double distance){
@@ -130,7 +129,6 @@ public class MapService {
                 * Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        System.out.println(EARTH_RADIUS * c);
         // 거리 계산
         return EARTH_RADIUS * c;
     }
