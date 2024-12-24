@@ -56,7 +56,7 @@ public class MapService {
         user.setPrevY(user.getCurrentY());
         user.setCurrentX(walkDto.getCurrentX());
         user.setCurrentY(walkDto.getCurrentY());
-        if(calculateDistance(user.getPrevX(), user.getPrevY(), user.getCurrentX(), user.getCurrentY()) >= 1000){
+        if(calculateDistance(user.getPrevX(), user.getPrevY(), user.getCurrentX(), user.getCurrentY()) >= 100){
             user.setDetect(1);
         }
         userRepository.save(user);
