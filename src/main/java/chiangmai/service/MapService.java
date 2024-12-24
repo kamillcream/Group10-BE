@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static chiangmai.util.UserUtil.*;
+
 @Service
 @RequiredArgsConstructor
 public class MapService {
@@ -90,7 +92,6 @@ public class MapService {
             }
             newRank++; // 다음 순위로 증가
         }
-
         // 모든 변경사항 저장
         userRepository.saveAll(users);
     }
@@ -159,14 +160,6 @@ public class MapService {
 //        // 기본값 (거리가 기준을 초과할 경우)
 //        return 0;
 //    }
-    public double calculateKcal(double total){
-        return total * 65 * 0.8;
-    }
-    public double calculateFat(double total){
-        return calculateKcal(total) * 0.4 / 0.9;
-    }
-    public double calculateC02(double total){
-        return total * 0.2;
-    }
+
 
 }
