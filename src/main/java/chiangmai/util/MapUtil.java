@@ -23,6 +23,8 @@ public class MapUtil {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         // 거리 계산
-        return EARTH_RADIUS * c;
+        System.out.println(EARTH_RADIUS * c);
+        System.out.println(c);
+        return c;
     }
 }

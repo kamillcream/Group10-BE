@@ -73,7 +73,7 @@ public class MapService {
             return false;
         }
         user.setCredit(user.getCredit() + credit);
-        user.setTotal(user.getTotal() + distance / 1000);
+        user.setTotal(user.getTotal() + (distance / 1000));
         userRepository.save(user);
         recalculateRanks();
 
