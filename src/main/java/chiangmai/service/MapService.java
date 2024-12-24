@@ -94,7 +94,7 @@ public class MapService {
     @Transactional
     public void recalculateRanks() {
         // total 기준으로 정렬된 사용자 리스트 가져오기
-        List<User> users = userRepository.findAllUsersOrderedByTotal();
+        List<User> users = userRepository.findAllUsersOrderedByCredit();
 
         int newRank = 1; // 새로운 순위 시작
         for (User user : users) {

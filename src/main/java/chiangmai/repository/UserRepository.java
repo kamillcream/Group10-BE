@@ -20,8 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT new chiangmai.dto.UserDto(u.userId, u.name, u.rank, u.credit) FROM User u ORDER BY u.rank ASC")
     List<UserDto> findTop10ByOrderByRank(Pageable pageable);
 
-    @Query("SELECT u FROM User u ORDER BY u.total DESC")
-    List<User> findAllUsersOrderedByTotal();
+    @Query("SELECT u FROM User u ORDER BY u.credit DESC")
+    List<User> findAllUsersOrderedByCredit();
 
     @Query("SELECT u.credit FROM User u WHERE u.name = :name")
     Long findCreditByName(@Param("name") String name);
