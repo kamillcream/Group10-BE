@@ -25,6 +25,6 @@ public class MapUtil {
         // 거리 계산
         System.out.println(EARTH_RADIUS * c);
         System.out.println(c);
-        return c;
+        return EARTH_RADIUS * c;
     }
 }
